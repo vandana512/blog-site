@@ -2,6 +2,7 @@ import express from 'express'
 import 'dotenv/config'
 import cors from 'cors'
 import connectDB from './configs/db.js'
+import adminRouter from './routes/adminRoutes.js'
 
 const app = express()
 
@@ -15,6 +16,8 @@ app.use(express.json())
 app.get('/', (req, res)=>{
     res.send("Api is working")
 })
+// /api/admin is the prefix used
+app.use('/api/admin', adminRouter)
 
 const PORT= 3000;
 
