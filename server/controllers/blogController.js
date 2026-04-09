@@ -47,3 +47,92 @@ export const addBlog= async(req, res)=>{
         })
     }
 }
+
+export const getAllBlogs= async(req, res)=>{
+    try{
+        const blogs= await Blog.find({
+            isPublished: true
+        })
+
+        res.status(201).json({
+            message:"blogs fetched succesfully",
+            blogs
+        })
+    }
+    catch(error){
+        res.json({
+            success: false,
+            message:error.message
+        })
+    }
+}
+
+export const getBlogById= async(req, res)=>{
+    try{
+        //ye ham url me dalenge isliye parse krrhe hai 
+        const {blogId}= req.parse;
+        const blog= await Blog.findById(blogId)
+
+        if(!blog){
+            return res.json({
+                success: false,
+                message:"blog not found"
+            })
+        }
+
+        res.status(201).json({
+            message:"blog fetched succesfully",
+            blog
+        })
+
+    }
+    catch(error){
+        res.json({
+            success: false,
+            message:error.message
+        })
+    }
+}
+
+export const deleteBlogById= async(req, res)=>{
+    try{
+        const {id}= req.body;
+
+        await Blog.findByIdAndDelete(id)
+
+        res.status(201).json({
+            message:"blog deleted succesfully",
+        })
+
+    }
+    catch(error){
+        res.json({
+            success: false,
+            message:error.message
+        })
+    }
+}
+
+export const togglePublish= async(req, res)=>{
+    try{
+        const {id}= req.body;
+        const blog= await Blog.findById(id);
+
+        blog.isPublished= !blog.isPublished
+
+        await blog.save();
+
+        res.status(201).json({
+            message:"blog status updated succesfully",
+            blog
+        })
+
+    }
+    catch(error){
+        res.json({
+            success: false,
+            message:error.message
+        })
+    }
+}
+
