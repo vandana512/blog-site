@@ -1,6 +1,7 @@
 import fs from 'fs'
 import imagekit from '../configs/imageKit.js';
 import Blog from '../models/Blog.js'
+import Comment from '../models/Comment.js';
 
 export const addBlog= async(req, res)=>{
     try{
@@ -70,7 +71,7 @@ export const getAllBlogs= async(req, res)=>{
 export const getBlogById= async(req, res)=>{
     try{
         //ye ham url me dalenge isliye parse krrhe hai 
-        const {blogId}= req.parse;
+        const {blogId}= req.params;
         const blog= await Blog.findById(blogId)
 
         if(!blog){
@@ -136,3 +137,37 @@ export const togglePublish= async(req, res)=>{
     }
 }
 
+export const addComment= async (req, res)=>{
+    try{
+        const {blog, name, content}= req.body;
+        await Comment.create({blog, name, content});
+
+        res.status(201).json({
+            message:"comment added for review"
+        })
+    }
+    catch(error){
+        res.json({
+            success: false,
+            message:error.message
+        })
+    }
+}
+
+export const getBlogComments= async (req, res)=>{
+    try{
+        const {blogId}= req.body;
+        const comments=await Comment.find({blog : blogId, isApproved:true}).sort({createdAt: -1});
+
+        res.status(201).json({
+            message:"comment fetched",
+            comments
+        })
+    }
+    catch(error){
+        res.json({
+            success: false,
+            message:error.message
+        })
+    }
+}
