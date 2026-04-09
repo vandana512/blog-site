@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
-import Blog from '../models/Blog';
-import Comment from '../models/Comment';
+import Blog from '../models/Blog.js';
+import Comment from '../models/Comment.js';
 
 export const adminLogin= async(req, res)=>{
     try{
@@ -77,6 +77,38 @@ export const getDashboard= async(req, res)=>{
         res.status(201).json({
             message: "data fetched",
             dashboardData
+        })
+
+    }
+    catch(error){
+        res.json({success: false, message:error.message})
+    }
+    
+}
+
+export const deleteCommentById= async(req, res)=>{
+    try{
+        const {id}=req.body
+        await Comment.findByIdAndDelete(id);
+
+        res.status(201).json({
+            message: "comment deleted successfully"
+        })
+
+    }
+    catch(error){
+        res.json({success: false, message:error.message})
+    }
+    
+}
+
+export const approveCommentById= async(req, res)=>{
+    try{
+        const {id}=req.body
+        await Comment.findByIdAndUpdate(id, {isApproved:true});
+
+        res.status(201).json({
+            message: "comment updated successfully"
         })
 
     }
