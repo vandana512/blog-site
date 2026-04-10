@@ -29,6 +29,13 @@ export const AppProvider = ({children})=>{
 
     useEffect(()=>{
         fetchBlogs();
+
+        //if auth is logged in to unka token
+        const token=localStorage.getItem('token')
+        if(token){
+            setToken(token);
+            axios.defaults.headers.common['Authorization']= `${token}`;
+        }
     }, [])
 
     const value={
