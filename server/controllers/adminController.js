@@ -17,7 +17,8 @@ export const adminLogin= async(req, res)=>{
 
         const token= jwt.sign({email}, process.env.JWT_SECRET)
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message: "user logged in successfully",
             token
         })
