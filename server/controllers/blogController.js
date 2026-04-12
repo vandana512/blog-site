@@ -37,7 +37,8 @@ export const addBlog= async(req, res)=>{
 
         await Blog.create({title, subTitle, description, category, image, isPublished})
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message:"blog added succesfully"
         })
     }
@@ -145,7 +146,8 @@ export const addComment= async (req, res)=>{
         const {blog, name, content}= req.body;
         await Comment.create({blog, name, content});
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message:"comment added for review"
         })
     }

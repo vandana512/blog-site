@@ -50,6 +50,20 @@ const Blog = () => {
 
   const addComment= async (e) => {
     e.preventDefault()
+    try {
+      const {data}= await axios.get('/api/blog/add-comment', {blog: id, name, content})
+
+      if(data.success){
+        toast.success("comment went for review")
+        setName('')
+        setContent('')
+      }
+      else{
+        toast.error(data.error)
+      }
+    } catch (error) {
+        toast.error(error.message)
+    }
   }
 
   useEffect(()=>{
