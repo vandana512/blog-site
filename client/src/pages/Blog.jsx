@@ -37,10 +37,9 @@ const Blog = () => {
   const fetchComments = async ()=>{
     try {
       const {data}= await axios.get('/api/blog/comments', {params: {blogId: id}})
-      if(data){
-        setComments(data.comments || [])
-      }
-      else{
+      if (data.success) {
+        setComments(data.comments || [])  // 🔥 safe fallback
+      } else {
         toast.error(data.message)
       }
     } catch (error) {
@@ -51,7 +50,11 @@ const Blog = () => {
   const addComment= async (e) => {
     e.preventDefault()
     try {
-      const {data}= await axios.get('/api/blog/add-comment', {blog: id, name, content})
+      const {data}= await axios.post('/api/blog/add-comment', {
+                                      blog: id,
+                                      name,
+                                      content
+                                    });
 
       if(data.success){
         toast.success("comment went for review")

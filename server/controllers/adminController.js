@@ -33,9 +33,10 @@ export const adminLogin= async(req, res)=>{
 
 export const getAllBlogsAdmin= async(req, res)=>{
     try{
-        const blogs= (await Blog.find({})).sort({createdAt:-1});
-        res.status(201).json({
-            message: "all bogs shown",
+        const blogs= (await Blog.find({}).sort({createdAt:-1}));
+        res.json({
+            success: true,
+            message: "all blogs shown",
             blogs
         })
 
@@ -49,8 +50,11 @@ export const getAllBlogsAdmin= async(req, res)=>{
 export const getAllComments= async(req, res)=>{
     try{
         // .find({})se sa return krta hai
-        const comments= (await Comment.find({})).populate('blog').sort({createdAt:-1});
-        res.status(201).json({
+        const comments = await Comment.find({})
+                            .populate('blog')
+                            .sort({ createdAt: -1 });
+        res.json({
+            success: true,
             message: "all comments shown",
             comments
         })
@@ -64,18 +68,21 @@ export const getAllComments= async(req, res)=>{
 
 export const getDashboard= async(req, res)=>{
     try{
-        const recentBlogs= (await Blog.find({})).toSorted({createdAt: -1}).limit(5);
+        const recentBlogs = await Blog.find({})
+                                .sort({ createdAt: -1 })
+                                .limit(5);
 
         const blogs= await Blog.countDocuments();
         const comments= await Comment.countDocuments();
 
-        const drafts= await Blog.countDocuments({isPublished: fasle});
+        const drafts= await Blog.countDocuments({isPublished: false});
 
         const dashboardData= {
             blogs, comments, drafts, recentBlogs
         }
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message: "data fetched",
             dashboardData
         })
@@ -92,7 +99,8 @@ export const deleteCommentById= async(req, res)=>{
         const {id}=req.body
         await Comment.findByIdAndDelete(id);
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message: "comment deleted successfully"
         })
 
@@ -108,7 +116,8 @@ export const approveCommentById= async(req, res)=>{
         const {id}=req.body
         await Comment.findByIdAndUpdate(id, {isApproved:true});
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message: "comment updated successfully"
         })
 

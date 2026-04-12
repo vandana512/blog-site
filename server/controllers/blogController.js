@@ -105,7 +105,8 @@ export const deleteBlogById= async(req, res)=>{
         //delete all associated comments with blog
         await Comment.deleteMany({blog: id});
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message:"blog deleted succesfully",
         })
 
@@ -127,7 +128,8 @@ export const togglePublish= async(req, res)=>{
 
         await blog.save();
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message:"blog status updated succesfully",
             blog
         })
@@ -152,6 +154,7 @@ export const addComment= async (req, res)=>{
         })
     }
     catch(error){
+        
         res.json({
             success: false,
             message:error.message
@@ -161,10 +164,11 @@ export const addComment= async (req, res)=>{
 
 export const getBlogComments= async (req, res)=>{
     try{
-        const {blogId}= req.body;
+        const {blogId}= req.params;
         const comments=await Comment.find({blog : blogId, isApproved:true}).sort({createdAt: -1});
 
-        res.status(201).json({
+        res.json({
+            success: true,
             message:"comment fetched",
             comments
         })
