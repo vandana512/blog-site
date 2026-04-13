@@ -177,8 +177,8 @@ IMAGEKIT_URL_ENDPOINT=your_url
 
 ### 1️⃣ Clone the repository
 ```
-git clone https://github.com/your-username/quickblog.git
-cd quickblog
+git clone https://github.com/your-username/blog-site.git
+cd blog-site
 ```
 
 ---
