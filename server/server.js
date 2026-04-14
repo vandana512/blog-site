@@ -21,10 +21,4 @@ app.get('/', (req, res)=>{
 app.use('/api/admin', adminRouter)
 app.use('/api/blog', blogRouter)
 
-const PORT= 3000;
-
-app.listen(PORT, ()=>{
-    console.log("Server is running on port 3000")
-})
-
 export default app
